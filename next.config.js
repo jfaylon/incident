@@ -1,5 +1,5 @@
 module.exports = {
   experimental: {
-    outputStandalone: false,
+    outputStandalone: true,
   },
 };
