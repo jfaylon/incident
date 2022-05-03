@@ -41,7 +41,6 @@ export const getServerSideProps = async context => {
   let incidentList = {};
   const { query } = req;
   const queryString = querystring.stringify(query);
-  console.log(queryString);
   if (session?.role === 'Admin') {
     userList = await axios.get(`${process.env.BASE_URL}/api/users?role=User`, {
       headers: { Cookie: req.headers['cookie'] },

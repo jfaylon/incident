@@ -30,7 +30,6 @@ const IncidentForm = props => {
     });
     router.push('/');
   };
-  console.log(formData);
   return (
     <form onSubmit={handleSubmit}>
       <label>
