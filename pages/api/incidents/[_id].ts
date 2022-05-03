@@ -15,22 +15,19 @@ const IncidentDetailsRoute = async (req: NextApiRequest, res: NextApiResponse): 
       case 'PUT':
         // delete incident
         const { status } = body;
-        Incident.update({ _id }, { status }, (err, data) => {
-          if (err) throw err;
-          return res.status(200).json(data);
-        });
+        const putResult = await Incident.update({ _id }, { status });
+        return res.status(200).json(putResult);
         break;
       case 'DELETE':
-        Incident.update({ _id }, { status: 'Deleted' }, (err, data) => {
-          if (err) throw err;
-          return res.status(200).json(data);
-        });
+        // soft delete to store the data
+        const deleteResult = await Incident.update({ _id }, { status: 'Deleted' });
+        return res.status(200).json(deleteResult);
         break;
       default:
         return res.status(400).send('Bad Request');
     }
   } catch (error) {
-    return res.status(400).json('Error in Processing Request');
+    return res.status(500).json('Error in Processing Request');
   }
 };
 

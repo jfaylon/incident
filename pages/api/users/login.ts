@@ -7,15 +7,16 @@ const LoginRoute = async (req: NextApiRequest, res: NextApiResponse): Promise<vo
     case 'POST':
       const { username, password } = req.body;
       const authenticate = User.authenticate();
-      authenticate(username, password, async (err, result) => {
-        if (err) return res.status(401).json('Invalid username/password');
-        const session = await getSession(req, res);
-        session.role = result.role;
-        session.username = result.username;
-        session.save();
-        return res.status(200).json({
-          role: result.role,
-        });
+      const { user, error } = await authenticate(username, password);
+      if (!user) {
+        return res.status(401).json('Invalid username/password');
+      }
+      const session = await getSession(req, res);
+      session.role = user.role;
+      session.username = user.username;
+      session.save();
+      return res.status(200).json({
+        role: user.role,
       });
       break;
     default:

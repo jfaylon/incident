@@ -41,7 +41,7 @@ describe('#incidents', () => {
     });
   });
   describe('#POST', () => {
-    // known issue for mongoose: https://github.com/alonronin/mockingoose/pull/83
+    // known issue for mockingoose: https://github.com/alonronin/mockingoose/pull/83
     it('should return 400', async () => {
       const { req, res } = createMocks({
         method: 'POST',
@@ -50,7 +50,7 @@ describe('#incidents', () => {
       await IncidentRoute(req, res);
       expect(res.statusCode).toEqual(400);
     });
-    it('should return 500', async () => {
+    it.skip('should return 500', async () => {
       const { req, res } = createMocks({
         method: 'POST',
         session: { role: 'Admin' },
@@ -58,7 +58,7 @@ describe('#incidents', () => {
       });
       mockingoose(IncidentModel).toReturn(new Error('Error'), 'save');
       await IncidentRoute(req, res);
-      expect(res.statusCode).toEqual(200);
+      expect(res.statusCode).toEqual(500);
     });
     it('should return 200', async () => {
       const { req, res } = createMocks({

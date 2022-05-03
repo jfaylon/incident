@@ -22,7 +22,6 @@ const UserRoute = async (req: NextApiRequest, res: NextApiResponse): Promise<voi
     case 'GET':
       try {
         const session = await getSession(req, res);
-        // return res.status(200).json(session);
         if (!session.role) {
           throw new Error('Error in Retrieving User List');
         }

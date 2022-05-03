@@ -29,7 +29,7 @@ const IncidentRoute = async (req: NextApiRequest, res: NextApiResponse): Promise
             updatedAt: -1,
           },
         };
-        Incident.find({ ...query, status: { $ne: 'Deleted' } })
+        Incident.find({ ...query, status: { $ne: 'Deleted' }, sortBy: undefined, page: undefined })
           .sort(sortObject[(query.sortBy as string) || 'createdAtDesc'])
           .limit(10)
           .skip((Number(query.page) - 1) * 10 || 0)
@@ -53,7 +53,6 @@ const IncidentRoute = async (req: NextApiRequest, res: NextApiResponse): Promise
         data.status = 'Pending';
         Incident.create(req.body, (err, data) => {
           if (err) return res.status(500).json('Internal Server Error');
-          console.log(data);
           return res.status(200).json(data);
         });
       } catch (error) {
