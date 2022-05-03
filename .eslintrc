@@ -1,0 +1,123 @@
+{
+  // commented out due to conflict when running eslint jsx-a11y
+  // "extends": "@ijsto",
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "react",
+    "unused-imports",
+    "simple-import-sort",
+    "sort-keys-fix",
+    "typescript-sort-keys"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+  "rules": {
+    // TypeScript has these checks built in
+    "react/prop-types": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-undef": "off",
+    // Needs to be replaced with @typescript-eslint equivalent to work correctly
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off", // don't report as we may WIP react components
+    // Have eslint be able to fix indentations automatically
+    // "indent": [
+    //   "warn",
+    //   2,
+    //   {
+    //     "ignoredNodes": [
+    //       "TemplateLiteral > *"
+    //     ],
+    //     "offsetTernaryExpressions": false,
+    //     "SwitchCase": 1
+    //   }
+    // ],
+    // https://naturaily.slack.com/archives/C01LQ2KDU1X/p1627625018016200?thread_ts=1627624742.015300&cid=C01LQ2KDU1X
+    "sort-keys": "off",
+    // modification is required for ESLint to work correctly against React code {*.tsx} files
+    "react/jsx-filename-extension": [
+      "warn",
+      {
+        "extensions": [".js", ".tsx", ".jsx"]
+      }
+    ],
+    // turning this on removes the ability to useEffect with zero dependencies, even if that is what we want
+    "react-hooks/exhaustive-deps": "off",
+    // I think these require stylistic refactors to implement :/
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/media-has-caption": "off",
+    // I think it can help to differentiate warnings ("may not break things") from errors ("will probably break something")
+    "prettier/prettier": [
+      "warn",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    // tricky to implement this without making everyone update their code
+    "no-shadow": "off",
+    "no-restricted-syntax": "off", // this blocks `for (const item of array) { ... }`
+    "no-plusplus": "off",
+    "react/no-children-prop": "off", // NextJS <Head /> `children` is required but is `null` in our usage
+    "react/no-danger": "off",
+    "unused-imports/no-unused-imports-ts": 2,
+    "react/jsx-key": [
+      "warn",
+      {
+        "checkFragmentShorthand": true
+      }
+    ], // if we don't follow this it'll produce a build warning anyway; so this is more of convenience
+    "react/react-in-jsx-scope": "off",
+    "no-param-reassign": "off", // conflicts with ref passing pattern.
+    "no-nested-ternary": "off",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // Packages. `react` related packages come first.
+          // Things that start with a letter (or digit or underscore), or `@` followed by a letter.
+          ["^react", "^next", "^@?\\w"],
+          // Absolute imports and Relative imports.
+          ["^(utils|services|hooks|hoc|types|contexts|dictionary|components|data)(/.*|$)", "^\\."],
+          // for scss imports.
+          ["^[^.]"]
+        ]
+      }
+    ],
+    "sort-keys-fix/sort-keys-fix": "warn",
+    "typescript-sort-keys/interface": "warn",
+    "typescript-sort-keys/string-enum": "warn",
+    "react/jsx-sort-props": [
+      "warn",
+      {
+        "callbacksLast": true,
+        "shorthandFirst": true,
+        "shorthandLast": false,
+        "ignoreCase": false,
+        "noSortAlphabetically": false,
+        "reservedFirst": true
+      }
+    ],
+    // these shouldn't be here
+    "node/no-unsupported-features/node-builtins": "off", // we're half-frontend
+    "max-classes-per-file": "off" // this breaks d.ts files
+  }
+}
