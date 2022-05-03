@@ -4,9 +4,8 @@
 module.exports = {
   clearMocks: true,
   collectCoverageFrom: [
-    'components/**/*.{ts,tsx,js}',
     'data/**/*.{ts,tsx,js}',
-    'pages/**/*.{ts,tsx,js}',
+    'pages/api/**/*.{ts,tsx,js}',
     'services/**/*.{ts,tsx,js}',
     'utils/**/*.{ts,tsx,js}',
     '!**/*.d.ts',

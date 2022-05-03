@@ -7,7 +7,6 @@ const IncidentRoute = async (req: NextApiRequest, res: NextApiResponse): Promise
     case 'GET':
       try {
         const session = await getSession(req, res);
-        console.log(session);
         if (!session?.role) {
           throw new Error('Error in Retrieving Incident List');
         }
@@ -35,7 +34,7 @@ const IncidentRoute = async (req: NextApiRequest, res: NextApiResponse): Promise
           .limit(10)
           .skip((Number(query.page) - 1) * 10 || 0)
           .exec((err, data) => {
-            if (err) throw err;
+            if (err) return res.status(500).json('Internal Server Error');
             return res.status(200).json(data);
           });
       } catch (error) {
@@ -46,7 +45,6 @@ const IncidentRoute = async (req: NextApiRequest, res: NextApiResponse): Promise
     case 'POST':
       try {
         const data = req.body;
-        // retrieve from session
         const session = await getSession(req, res);
         if (session.role !== 'Admin') {
           throw new Error('Error in Retrieving Incident List');
@@ -54,7 +52,8 @@ const IncidentRoute = async (req: NextApiRequest, res: NextApiResponse): Promise
         data.createdBy = session.username || 'User';
         data.status = 'Pending';
         Incident.create(req.body, (err, data) => {
-          if (err) throw err;
+          if (err) return res.status(500).json('Internal Server Error');
+          console.log(data);
           return res.status(200).json(data);
         });
       } catch (error) {
